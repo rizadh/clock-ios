@@ -17,13 +17,44 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.3</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>LSApplicationCategoryType</key>
-	<string></string>
+	<string>public.app-category.reference</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>UIApplicationShortcutItems</key>
+	<array>
+		<dict>
+			<key>UIApplicationShortcutItemIconType</key>
+			<string>UIApplicationShortcutIconTypeHome</string>
+			<key>UIApplicationShortcutItemSubtitle</key>
+			<string>Teal color from the icon</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Default Theme</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>useDefaultTheme</string>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemIconType</key>
+			<string>UIApplicationShortcutIconTypeShuffle</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Random Theme</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>useRandomTheme</string>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemIconType</key>
+			<string>UIApplicationShortcutIconTypeFavorite</string>
+			<key>UIApplicationShortcutItemSubtitle</key>
+			<string>Time for a little fun</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Disco mode</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>activateDiscoMode</string>
+		</dict>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>Launch Screen</string>
 	<key>UIRequiredDeviceCapabilities</key>

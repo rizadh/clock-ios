@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4A074EAB1E638C0000AD6000 /* ClockHandLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A074EAA1E638C0000AD6000 /* ClockHandLayer.swift */; };
+		4A3DB1D41E6538E700573E2F /* ClockFrameLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A3DB1D31E6538E700573E2F /* ClockFrameLayer.swift */; };
 		4A7C114D1E51402F0006EDE3 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4A7C114C1E51402F0006EDE3 /* Launch Screen.storyboard */; };
 		4ABB821B1E4A77C5006EEB64 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABB821A1E4A77C5006EEB64 /* AppDelegate.swift */; };
 		4ABB821D1E4A77C5006EEB64 /* ClockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABB821C1E4A77C5006EEB64 /* ClockViewController.swift */; };
@@ -15,6 +17,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4A074EAA1E638C0000AD6000 /* ClockHandLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClockHandLayer.swift; sourceTree = "<group>"; };
+		4A3DB1D31E6538E700573E2F /* ClockFrameLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClockFrameLayer.swift; sourceTree = "<group>"; };
 		4A7C114C1E51402F0006EDE3 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		4ABB82171E4A77C5006EEB64 /* Clock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Clock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4ABB821A1E4A77C5006EEB64 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -56,6 +60,8 @@
 			children = (
 				4ABB821A1E4A77C5006EEB64 /* AppDelegate.swift */,
 				4ABB821C1E4A77C5006EEB64 /* ClockViewController.swift */,
+				4A074EAA1E638C0000AD6000 /* ClockHandLayer.swift */,
+				4A3DB1D31E6538E700573E2F /* ClockFrameLayer.swift */,
 				4ABB822C1E4A8049006EEB64 /* ClockView.swift */,
 				4A7C114C1E51402F0006EDE3 /* Launch Screen.storyboard */,
 				4ABB82211E4A77C5006EEB64 /* Assets.xcassets */,
@@ -139,6 +145,8 @@
 				4ABB821D1E4A77C5006EEB64 /* ClockViewController.swift in Sources */,
 				4ABB822D1E4A8049006EEB64 /* ClockView.swift in Sources */,
 				4ABB821B1E4A77C5006EEB64 /* AppDelegate.swift in Sources */,
+				4A074EAB1E638C0000AD6000 /* ClockHandLayer.swift in Sources */,
+				4A3DB1D41E6538E700573E2F /* ClockFrameLayer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -244,7 +252,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 4HT26RR3LT;
 				INFOPLIST_FILE = Clock/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = rizadh.Clock;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -258,7 +266,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 4HT26RR3LT;
 				INFOPLIST_FILE = Clock/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = rizadh.Clock;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -1,7 +1,7 @@
 import UIKit
 
 class ClockViewController: UIViewController {
-    var clockView: ClockView!
+    var clockView: ClockView?
     
     static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
     static let ArchiveURL = DocumentsDirectory.appendingPathComponent("themeHue")
@@ -9,30 +9,41 @@ class ClockViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        clockView = ClockView(frame: view.frame)
-        clockView.backgroundColor = UIColor.clear
-        clockView.topAnchor.constraint(equalTo: view.topAnchor)
-        clockView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        clockView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
-        clockView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        let newClockView = ClockView(frame: view.frame)
+        newClockView.topAnchor.constraint(equalTo: view.topAnchor)
+        newClockView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        newClockView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
+        newClockView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         
+        newClockView.themeHue = NSKeyedUnarchiver.unarchiveObject(withFile: ClockViewController.ArchiveURL.path) as! CGFloat? ?? ClockView.defaultHue
         
-        if let storedColor = NSKeyedUnarchiver.unarchiveObject(withFile: ClockViewController.ArchiveURL.path) as! CGFloat? {
-            clockView.themeHue = storedColor
-        }
-        
-        print(ClockViewController.ArchiveURL.path)
-        
-        view.addSubview(clockView)
+        clockView = newClockView
+        view.addSubview(clockView!)
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        NSKeyedArchiver.archiveRootObject(clockView.themeHue, toFile: ClockViewController.ArchiveURL.path)
+    func saveClockHue() {
+        if let hue = clockView?.themeHue {
+            NSKeyedArchiver.archiveRootObject(hue, toFile: ClockViewController.ArchiveURL.path)
+        }
     }
     
     override var prefersStatusBarHidden: Bool {
         get {
             return true
+        }
+    }
+    
+    func handleShortcutItem(withName shortcutName: String) {
+        
+        switch (shortcutName) {
+        case "useDefaultTheme":
+            clockView?.useDefaultHue()
+        case "useRandomTheme":
+            clockView?.themeHue = CGFloat(arc4random()) / CGFloat(UINT32_MAX)
+        case "activateDiscoMode":
+            clockView?.discoMode = true
+        default:
+            fatalError("Invalid shortcut type")
         }
     }
 }
