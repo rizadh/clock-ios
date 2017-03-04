@@ -11,10 +11,12 @@ class ClockView: UIView {
     private var lastOrientation: UIDeviceOrientation = UIDevice.current.orientation
     
     private var skewAngle: CGFloat = 0 {
-        didSet {
-            if skewAngle < 0 || skewAngle > .pi / 6 {
+        willSet {
+            if newValue < 0 || newValue > .pi / 6 {
                 AudioServicesPlaySystemSound(1104)
             }
+        }
+        didSet {
             
             while skewAngle < 0 {
                 skewAngle += .pi / 6
