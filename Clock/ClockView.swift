@@ -158,6 +158,7 @@ class ClockView: UIView {
         
         let doubleTap = UITapGestureRecognizer(target: self, action: #selector(useDefaultHue as (Void) -> Void))
         doubleTap.numberOfTapsRequired = 2
+        doubleTap.delaysTouchesEnded = false
         self.addGestureRecognizer(doubleTap)
     }
     
