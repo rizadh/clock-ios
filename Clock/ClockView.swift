@@ -17,12 +17,11 @@ class ClockView: UIView {
             }
         }
         didSet {
+            skewAngle = skewAngle.truncatingRemainder(dividingBy: .pi / 6)
             
             while skewAngle < 0 {
                 skewAngle += .pi / 6
             }
-            
-            skewAngle = skewAngle.truncatingRemainder(dividingBy: .pi / 6)
             
             CATransaction.begin()
             CATransaction.setValue(kCFBooleanTrue, forKey: kCATransactionDisableActions)
