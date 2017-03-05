@@ -116,6 +116,22 @@ class ClockFrameLayer: CALayer {
         self.tickWidthFactor = tickWidthFactor
     }
     
+    override init(layer: Any) {
+        if let layer = layer as? ClockFrameLayer {
+            self.frameColor = layer.frameColor
+            self.innerColor = layer.innerColor
+            self.tickColor = layer.tickColor
+            self.frameRadiusFactor = layer.frameRadiusFactor
+            self.frameWidthFactor = layer.frameWidthFactor
+            self.tickLengthFactor = layer.tickLengthFactor
+            self.tickWidthFactor = layer.tickWidthFactor
+            
+            super.init(layer: layer)
+        } else {
+            fatalError("Bad layer type")
+        }
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

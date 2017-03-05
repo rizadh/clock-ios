@@ -1,30 +1,37 @@
 import UIKit
 
 class ClockViewController: UIViewController {
-    var clockView: ClockView?
+    static let ArchiveURL = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("themeHue")
     
-    static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
-    static let ArchiveURL = DocumentsDirectory.appendingPathComponent("themeHue")
+    var clockView: ClockView {
+        get {
+            return view as! ClockView
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let newClockView = ClockView(frame: view.frame)
-        newClockView.topAnchor.constraint(equalTo: view.topAnchor)
-        newClockView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        newClockView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
-        newClockView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        let clockView = ClockView(frame: view.frame)
+        clockView.topAnchor.constraint(equalTo: view.topAnchor)
+        clockView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        clockView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
+        clockView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         
-        newClockView.themeHue = NSKeyedUnarchiver.unarchiveObject(withFile: ClockViewController.ArchiveURL.path) as! CGFloat? ?? ClockView.defaultHue
+        let doubleTap = UITapGestureRecognizer(target: clockView, action: #selector(clockView.useDefaultHue as (Void) -> Void))
+        doubleTap.numberOfTapsRequired = 2
+        doubleTap.delaysTouchesEnded = false
+        clockView.addGestureRecognizer(doubleTap)
         
-        clockView = newClockView
-        view.addSubview(clockView!)
+        if let storedHue = NSKeyedUnarchiver.unarchiveObject(withFile: ClockViewController.ArchiveURL.path) as! CGFloat? {
+            clockView.themeHue = storedHue
+        }
+        
+        view = clockView
     }
     
     func saveClockHue() {
-        if let hue = clockView?.themeHue {
-            NSKeyedArchiver.archiveRootObject(hue, toFile: ClockViewController.ArchiveURL.path)
-        }
+        NSKeyedArchiver.archiveRootObject(clockView.themeHue, toFile: ClockViewController.ArchiveURL.path)
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -34,14 +41,13 @@ class ClockViewController: UIViewController {
     }
     
     func handleShortcutItem(withName shortcutName: String) {
-        
         switch (shortcutName) {
         case "useDefaultTheme":
-            clockView?.useDefaultHue()
+            clockView.useDefaultHue()
         case "useRandomTheme":
-            clockView?.themeHue = CGFloat(arc4random()) / CGFloat(UINT32_MAX)
+            clockView.themeHue = CGFloat(arc4random()) / CGFloat(UINT32_MAX)
         case "activateDiscoMode":
-            clockView?.discoMode = true
+            clockView.discoMode = true
         default:
             fatalError("Invalid shortcut type")
         }

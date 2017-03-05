@@ -66,4 +66,18 @@ class ClockHandLayer: CALayer {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    override init(layer: Any) {
+        if let layer = layer as? ClockHandLayer {
+            self.handColor = layer.handColor
+            self.handLengthFactor = layer.handLengthFactor
+            self.handWidthFactor = layer.handWidthFactor
+            self.pinFillColor = layer.pinFillColor
+            self.pinRadiusFactor = layer.pinRadiusFactor
+            
+            super.init(layer: layer)
+        } else {
+            fatalError("Bad layer type")
+        }
+    }
 }

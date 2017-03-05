@@ -25,11 +25,11 @@ class ClockView: UIView {
             
             CATransaction.begin()
             CATransaction.setValue(kCFBooleanTrue, forKey: kCATransactionDisableActions)
-            frameLayer.transform = CATransform3DMakeRotation(skewAngle, 0, 0, 1)
+            frameLayer.transform = CATransform3DMakeAffineTransform(CGAffineTransform(rotationAngle: skewAngle))
             CATransaction.commit()
         }
     }
-
+    
     // MARK: CALayers
     private var frameLayer: ClockFrameLayer
     private var secondHandLayer: ClockHandLayer
@@ -152,15 +152,10 @@ class ClockView: UIView {
         layer.addSublayer(minuteHandLayer)
         layer.addSublayer(hourHandLayer)
         layer.addSublayer(secondHandLayer)
-
+        
         // Update hands on every screen refresh
         displayLink = CADisplayLink(target: self, selector: #selector(updateHands as (Void) -> Void))
         displayLink.add(to: .current, forMode: .commonModes)
-        
-        let doubleTap = UITapGestureRecognizer(target: self, action: #selector(useDefaultHue as (Void) -> Void))
-        doubleTap.numberOfTapsRequired = 2
-        doubleTap.delaysTouchesEnded = false
-        self.addGestureRecognizer(doubleTap)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -183,28 +178,16 @@ class ClockView: UIView {
         
         super.layoutSubviews()
         
-        let oldSkewAngle = skewAngle
-        skewAngle = 0
+        frameLayer.bounds = layer.bounds
+        minuteHandLayer.bounds = layer.bounds
+        secondHandLayer.bounds = layer.bounds
+        hourHandLayer.bounds = layer.bounds
         
-        let minuteTransform = minuteHandLayer.transform
-        let hourTransform = hourHandLayer.transform
-        let secondTransform = secondHandLayer.transform
+        frameLayer.position = layer.position
+        minuteHandLayer.position = layer.position
+        secondHandLayer.position = layer.position
+        hourHandLayer.position = layer.position
         
-        CATransaction.begin()
-        CATransaction.setValue(kCFBooleanTrue, forKey: kCATransactionDisableActions)
-        minuteHandLayer.transform = CATransform3DIdentity
-        hourHandLayer.transform = CATransform3DIdentity
-        secondHandLayer.transform = CATransform3DIdentity
-        frameLayer.frame = layer.bounds
-        minuteHandLayer.frame = layer.bounds
-        hourHandLayer.frame = layer.bounds
-        secondHandLayer.frame = layer.bounds
-        minuteHandLayer.transform = minuteTransform
-        hourHandLayer.transform = hourTransform
-        secondHandLayer.transform = secondTransform
-        CATransaction.commit()
-        
-        skewAngle = oldSkewAngle
         frameLayer.setNeedsDisplay()
         minuteHandLayer.setNeedsDisplay()
         hourHandLayer.setNeedsDisplay()
@@ -215,19 +198,13 @@ class ClockView: UIView {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         discoMode = false
         
-        let touch = touches.first!
-        
-        lastTouchAngle = getTouchAngle(to: touch.preciseLocation(in: self))
+        lastTouchAngle = getTouchAngle(to: touches.first!.preciseLocation(in: self))
         frameLayer.removeAnimation(forKey: "skew")
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let touchLocation = touches.first?.preciseLocation(in: self) else {
-            fatalError("Could not get first touch")
-        }
+        let currentAngle = getTouchAngle(to: touches.first!.preciseLocation(in: self))
         
-        let currentAngle = getTouchAngle(to: touchLocation)
-
         if currentAngle != CGFloat.infinity && !currentAngle.isNaN {
             skewAngle += currentAngle - lastTouchAngle
             themeHue += (currentAngle - lastTouchAngle) / .pi / 2
