@@ -28,11 +28,9 @@ class ClockViewController: UIViewController {
         doubleTap.numberOfTapsRequired = 2
         doubleTap.delaysTouchesEnded = false
         clockView.addGestureRecognizer(doubleTap)
-        
-        if let storedHue = NSKeyedUnarchiver.unarchiveObject(withFile: ClockViewController.ArchiveURL.path) as! CGFloat? {
-            clockView.themeHue = storedHue
-        }
-        
+
+        clockView.themeHue = NSKeyedUnarchiver.unarchiveObject(withFile: ClockViewController.ArchiveURL.path) as? CGFloat ?? ClockView.defaultHue
+
         // Update hands on every screen refresh
         displayLink = CADisplayLink(target: self, selector: #selector(updateHands as (Void) -> Void))
         displayLink?.add(to: .current, forMode: .commonModes)
