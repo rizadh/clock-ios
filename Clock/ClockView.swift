@@ -30,7 +30,6 @@ class ClockView: UIView {
         }
     }
     
-    // MARK: CALayers
     private var frameLayer: ClockFrameLayer
     private var secondHandLayer: ClockHandLayer
     private var minuteHandLayer: ClockHandLayer
@@ -66,6 +65,7 @@ class ClockView: UIView {
             CATransaction.commit()
         }
     }
+    
     private var secondaryHue: CGFloat {
         get {
             return (themeHue + 0.5).truncatingRemainder(dividingBy: 1)
@@ -73,7 +73,17 @@ class ClockView: UIView {
     }
     
     
-    // MARK: Private functions
+    // MARK: Public methods
+    func setHandAngles(_ hands: (hour: CGFloat, minute: CGFloat, second: CGFloat)) {
+        CATransaction.begin()
+        CATransaction.setValue(kCFBooleanTrue, forKey: kCATransactionDisableActions)
+        minuteHandLayer.transform = CATransform3DMakeRotation(hands.minute, 0, 0, 1)
+        hourHandLayer.transform = CATransform3DMakeRotation(hands.hour, 0, 0, 1)
+        secondHandLayer.transform = CATransform3DMakeRotation(hands.second, 0, 0, 1)
+        CATransaction.commit()
+    }
+    
+    // MARK: Private methods
     private func resetSkewAngle() {
         let animation = CABasicAnimation(keyPath: "transform.rotation.z")
         animation.fromValue = skewAngle
@@ -92,18 +102,6 @@ class ClockView: UIView {
         skewAngle = 0
     }
     
-    private func getClockHandAngles() -> (hour: CGFloat, minute: CGFloat, second: CGFloat) {
-        let date = NSDate()
-        let calendar = NSCalendar.current
-        
-        let nanoseconds = CGFloat(calendar.component(.nanosecond, from: date as Date))
-        let seconds = CGFloat(calendar.component(.second, from: date as Date)) + nanoseconds / 1e9
-        let minutes = CGFloat(calendar.component(.minute, from: date as Date)) + seconds / 60
-        let hours = (CGFloat(calendar.component(.hour, from: date as Date)) + minutes / 60).truncatingRemainder(dividingBy: 12)
-        
-        return (hour: hours * .pi / 6, minute: minutes * .pi / 30, second: seconds * .pi / 30)
-    }
-    
     private func getTouchAngle(to touchPosition: CGPoint) -> CGFloat {
         let x = touchPosition.x - center.x
         let y = touchPosition.y - center.y
@@ -111,21 +109,7 @@ class ClockView: UIView {
         return (x < 0 ? 1 : 2) * .pi + atan(y / x)
     }
     
-    @objc private func updateHands() {
-        if discoMode {
-            themeHue += CGFloat(displayLink.duration)
-            skewAngle += 8 * CGFloat(displayLink.duration) / .pi
-        }
-        
-        let hands = getClockHandAngles()
-        
-        CATransaction.begin()
-        CATransaction.setValue(kCFBooleanTrue, forKey: kCATransactionDisableActions)
-        minuteHandLayer.transform = CATransform3DMakeRotation(hands.minute, 0, 0, 1)
-        hourHandLayer.transform = CATransform3DMakeRotation(hands.hour, 0, 0, 1)
-        secondHandLayer.transform = CATransform3DMakeRotation(hands.second, 0, 0, 1)
-        CATransaction.commit()
-    }
+    
     
     // MARK: Initializers
     override init(frame: CGRect) {
@@ -152,10 +136,6 @@ class ClockView: UIView {
         layer.addSublayer(minuteHandLayer)
         layer.addSublayer(hourHandLayer)
         layer.addSublayer(secondHandLayer)
-        
-        // Update hands on every screen refresh
-        displayLink = CADisplayLink(target: self, selector: #selector(updateHands as (Void) -> Void))
-        displayLink.add(to: .current, forMode: .commonModes)
     }
     
     required init?(coder aDecoder: NSCoder) {

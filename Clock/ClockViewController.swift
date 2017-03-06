@@ -9,6 +9,12 @@ class ClockViewController: UIViewController {
         }
     }
     
+    var displayLink: CADisplayLink?
+    
+    @objc private func updateHands() {
+        clockView.setHandAngles(getClockHandAngles())
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -26,6 +32,10 @@ class ClockViewController: UIViewController {
         if let storedHue = NSKeyedUnarchiver.unarchiveObject(withFile: ClockViewController.ArchiveURL.path) as! CGFloat? {
             clockView.themeHue = storedHue
         }
+        
+        // Update hands on every screen refresh
+        displayLink = CADisplayLink(target: self, selector: #selector(updateHands as (Void) -> Void))
+        displayLink?.add(to: .current, forMode: .commonModes)
         
         view = clockView
     }
@@ -51,6 +61,20 @@ class ClockViewController: UIViewController {
         default:
             fatalError("Invalid shortcut type")
         }
+    }
+    
+    
+    
+    private func getClockHandAngles() -> (hour: CGFloat, minute: CGFloat, second: CGFloat) {
+        let date = NSDate()
+        let calendar = NSCalendar.current
+        
+        let nanoseconds = CGFloat(calendar.component(.nanosecond, from: date as Date))
+        let seconds = CGFloat(calendar.component(.second, from: date as Date)) + nanoseconds / 1e9
+        let minutes = CGFloat(calendar.component(.minute, from: date as Date)) + seconds / 60
+        let hours = (CGFloat(calendar.component(.hour, from: date as Date)) + minutes / 60)
+        
+        return (hour: hours * .pi / 6, minute: minutes * .pi / 30, second: seconds * .pi / 30)
     }
 }
 
