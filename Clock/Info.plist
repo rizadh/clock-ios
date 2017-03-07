@@ -44,16 +44,6 @@
 			<key>UIApplicationShortcutItemType</key>
 			<string>useRandomTheme</string>
 		</dict>
-		<dict>
-			<key>UIApplicationShortcutItemIconType</key>
-			<string>UIApplicationShortcutIconTypeFavorite</string>
-			<key>UIApplicationShortcutItemSubtitle</key>
-			<string>Time for a little fun</string>
-			<key>UIApplicationShortcutItemTitle</key>
-			<string>Disco mode</string>
-			<key>UIApplicationShortcutItemType</key>
-			<string>activateDiscoMode</string>
-		</dict>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>Launch Screen</string>
