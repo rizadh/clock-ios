@@ -2,9 +2,6 @@ import UIKit
 import AudioToolbox
 
 class ClockView: UIView {
-    // MARK: Static properties
-    static let defaultHue: CGFloat = 0.53
-
     // MARK: Public properties
     var lastOrientation: UIDeviceOrientation = UIDevice.current.orientation
     var frameLayer: ClockFrameLayer = ClockFrameLayer(radius: 0.8, width: 1 / 20, tickLength: 0.05, tickWidth: 1 / 40)
